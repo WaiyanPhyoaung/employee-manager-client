@@ -1,9 +1,9 @@
 export interface Employee {
-  id: number;
+  id?: number;
   name: String;
   phoneNumber: String;
   jobTitles: String;
   email: String;
   imageUrl: String;
-  employeeCode: String;
+  employeeCode?: String;
 }
