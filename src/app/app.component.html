@@ -1,3 +1,62 @@
-<div *ngFor="let employee of employeeLists">
-    <div>{{employee.name}}</div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid ">
+        <a class="navbar-brand" href="#">
+            <h3>Employee Manager</h3>
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Create Employee <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input style="color: #d2691e;" class="form-control mr-sm-2" type="search" placeholder="Search">
+                <button style="color: #d2691e;" class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <!-- loop -->
+        <div *ngFor="let employee of employeeLists" class="col-md-6 col-xl-3">
+            <div class="card m-b-30">
+                <div class="card-body row">
+                    <div class="col-5">
+                        <a href=""><img src="{{employee.imageUrl}}" alt="" class="img-fluid rounded-circle w-60"></a>
+                    </div>
+                    <div class="col-7 card-title align-self-center mb-0">
+                        <h5 class="name">{{employee.name}}</h5>
+                        <p class="job" class="m-0">{{employee.jobTitles}}</p>
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>Email : <a
+                            href="#">{{employee.email}}</a></li>
+                    <li class="list-group-item"><i class="fa fa-phone float-right"></i>Phone : {{employee.phoneNumber}}
+                    </li>
+                </ul>
+                <div class="card-body">
+                    <div class="float-right btn-group btn-group-sm">
+                        <a href="#" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip"
+                            data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                        <a href="#" class="btn btn-secondary tooltips" data-placement="top" data-toggle="tooltip"
+                            data-original-title="Delete"><i class="fa fa-times"></i></a>
+                    </div>
+                    <ul class="social-links list-inline mb-0">
+                        <li class="list-inline-item"><a title="" data-placement="top" data-toggle="tooltip"
+                                class="tooltips" href="" data-original-title="Facebook"><i
+                                    class="fa fa-facebook-f"></i></a></li>
+                        <li class="list-inline-item"><a title="" data-placement="top" data-toggle="tooltip"
+                                class="tooltips" href="" data-original-title="Twitter"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li class="list-inline-item"><a title="" data-placement="top" data-toggle="tooltip"
+                                class="tooltips" href="" data-original-title="Skype"><i class="fa fa-skype"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>

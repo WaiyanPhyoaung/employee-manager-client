@@ -9,7 +9,8 @@ import { EmployeeService } from './employee.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  public employeeLists: Employee[] = [];
+  title = 'employee-manager';
+  employeeLists: Employee[] = [];
 
   constructor(private service: EmployeeService) {}
 
@@ -17,7 +18,7 @@ export class AppComponent implements OnInit {
     this.getEmployees();
   }
 
-  public getEmployees(): void {
+  getEmployees(): void {
     this.service.getEmployees().subscribe(
       (data) => {
         this.employeeLists = data;
