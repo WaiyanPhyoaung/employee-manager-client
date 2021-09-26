@@ -16,20 +16,16 @@ export class AppComponent implements OnInit, AfterViewInit {
   modalHeader = '';
   title = 'employee-manager';
   employeeLists: Employee[] = [];
+  copyLists: Employee[] = [];
+
   form: FormGroup;
+  searchForm: FormGroup;
   modal: any;
   deleteModal: any;
   idToDelete? = 0;
-  employee: Employee = {
-    name: '',
-    email: '',
-    jobTitles: '',
-    imageUrl: '',
-    phoneNumber: '',
-  };
 
   constructor(private service: EmployeeService, builder: FormBuilder) {
-    this.form = builder.group({
+    (this.form = builder.group({
       id: null,
       name: ['', Validators.required],
       email: ['', Validators.required],
@@ -37,8 +33,12 @@ export class AppComponent implements OnInit, AfterViewInit {
       jobTitles: ['', Validators.required],
       imageUrl: ['', Validators.required],
       employeeCode: null,
-    });
+    })),
+      (this.searchForm = builder.group({
+        search: [''],
+      }));
   }
+
   ngAfterViewInit(): void {
     this.modal = new bootstrap.Modal('#createModal');
     this.deleteModal = new bootstrap.Modal('#deleteModal');
@@ -46,6 +46,11 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getEmployees();
+
+    this.searchForm.get('search')?.valueChanges.subscribe((value) => {
+      this.employeeLists = this.searchAndUpdate(value, this.copyLists);
+      if (this.employeeLists.length < 1 || !value) this.getEmployees();
+    });
   }
   openCreateModal() {
     this.modalHeader = 'Create Employee';
@@ -60,7 +65,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   openDeleteModal(id?: number) {
     this.deleteModal.show();
-    console.log(id);
     this.idToDelete = id;
   }
   save = () => {
@@ -83,15 +87,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     );
     this.deleteModal.hide();
   };
-  getEmployees(): void {
+  getEmployees() {
     this.service.getEmployees().subscribe(
       (data) => {
         this.employeeLists = data;
+        this.copyLists = data;
       },
       (error: HttpErrorResponse) => {
         alert(error.error);
-      },
-      () => console.log('Success')
+      }
     );
   }
 
@@ -110,5 +114,21 @@ export class AppComponent implements OnInit, AfterViewInit {
       },
       (error) => console.log(error)
     );
+  }
+
+  private searchAndUpdate(value: String, orignalLists: Employee[]) {
+    if (orignalLists.length < 1) return [];
+
+    let searchedEmployees: Employee[] = [];
+    orignalLists.forEach((e) => {
+      if (
+        e.name.toLocaleLowerCase().includes(value.toLocaleLowerCase()) ||
+        e.phoneNumber.toLocaleLowerCase().includes(value.toLocaleLowerCase()) ||
+        e.email.toLocaleLowerCase().includes(value.toLocaleLowerCase()) ||
+        e.jobTitles.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+      )
+        searchedEmployees.push(e);
+    });
+    return searchedEmployees;
   }
 }
